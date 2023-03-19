@@ -3,6 +3,8 @@
 bw-export is a simple bash script that exports a raw, encrypted JSON copy of your Bitwarden vault.
 It will encrypt the JSON file with OpenSSL and lock it, by default, with your vault password.
 
+[![Build Status](https://ci.mastermindzh.tech/api/badges/mastermindzh/bw-export/status.svg)](https://ci.mastermindzh.tech/mastermindzh/bw-export)
+
 <!-- toc -->
 
 - [bw-export](#bw-export)
