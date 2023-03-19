@@ -15,6 +15,7 @@ steps:
         from_secret: docker_hub_password
     commands:
       - echo $DOCKER_PASSWORD | docker login --username "$DOCKER_USERNAME" --password-stdin
+      - apk add --no-cache bash
       - bash docker-publish.sh
 
 services:
