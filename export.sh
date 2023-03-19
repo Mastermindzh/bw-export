@@ -19,10 +19,12 @@ BW_EXPORT_FOLDER=${BW_EXPORT_FOLDER:-"/export"}
 BW_FOLDER_STRUCTURE=${BW_FOLDER_STRUCTURE:-"+%Y/%m"}
 BW_PASSWORD_ENCODE=${BW_PASSWORD_ENCODE:-"base64"}
 BW_OPENSSL_OPTIONS=${BW_OPENSSL_OPTIONS:-"-aes-256-cbc -pbkdf2 -iter 100000"}
+BW_ENCRYPTION_PASS=${BW_ENCRYPTION_PASS:-"$BW_PASS"}
 
 # construct internal variables
 BW_INTERNAL_TIMESTAMP=$(date "$BW_TIMESTAMP")
 BW_INTERNAL_PASSWORD="$BW_PASS"
+BW_INTERNAL_ENCRYPTION_PASS="$BW_ENCRYPTION_PASS"
 BW_INTERNAL_FOLDER_STRUCTURE="$BW_EXPORT_FOLDER"
 BW_ENC_OUTPUT_FILE="$BW_FILENAME_PREFIX$BW_INTERNAL_TIMESTAMP.enc"
 if [ -n "$BW_FOLDER_STRUCTURE" ]; then
@@ -38,6 +40,7 @@ case $BW_PASSWORD_ENCODE in
 
 "base64")
     BW_INTERNAL_PASSWORD=$(echo "$BW_INTERNAL_PASSWORD" | base64 -d)
+    BW_INTERNAL_ENCRYPTION_PASS=$(echo "$BW_INTERNAL_ENCRYPTION_PASS" | base64 -d)
     ;;
 "none" | "plain")
     echo "using un-encoded password."
@@ -55,11 +58,13 @@ BW_SESSION=$(bw login "$BW_ACCOUNT" "$BW_INTERNAL_PASSWORD" --raw)
 # commands
 echo "Exporting to \"$BW_ENC_OUTPUT_FILE\""
 echo "$BW_ENCRYPTION_PASSWORD"
-bw --raw --session "$BW_SESSION" export --format json | openssl enc $BW_OPENSSL_OPTIONS -k "$BW_INTERNAL_PASSWORD" -out "$BW_ENC_OUTPUT_FILE"
+bw --raw --session "$BW_SESSION" export --format json | openssl enc $BW_OPENSSL_OPTIONS -k "$BW_INTERNAL_ENCRYPTION_PASS" -out "$BW_ENC_OUTPUT_FILE"
 bw_logout
 
 # make sure none of these are available later
 unset BW_SESSION
-unset BW_PASS
 unset BW_ACCOUNT
+unset BW_PASS
 unset BW_INTERNAL_PASSWORD
+unset BW_ENCRYPTION_PASS
+unset BW_INTERNAL_ENCRYPTION_PASS

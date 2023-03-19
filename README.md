@@ -51,3 +51,4 @@ The list below outlines most of them:
 | BW_FOLDER_STRUCTURE | `Y/%m`                                   | Date/timestamp to generate folders                             |
 | BW_PASSWORD_ENCODE  | `base64`                                 | "plain", or "base64", depending on whether you encoded BW_PASS |
 | BW_OPENSSL_OPTIONS  | `aes-256-cbc -pbkdf2 -iter 100000`       | Options passed to openssl's "enc" command                      |
+| BW_ENCRYPTION_PASS  | `$BW_PASS` (same value as BW_PASS)       | Password to encrypt the json file                              |
