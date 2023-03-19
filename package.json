@@ -5,7 +5,7 @@
   "main": "export.sh",
   "scripts": {
     "docker-build": "docker build -t bw-export .",
-    "publish": "bash ci/docker-publish.sh"
+    "publish": "bash docker-publish.sh"
   },
   "repository": {
     "type": "git",
