@@ -5,7 +5,6 @@ DOCKER_SCOPE=${DOCKER_USERNAME:-"mastermindzh"}
 TAGS=(
     "latest"
     "$(cat package.json | grep version | head -1 | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]')"
-    "$(git rev-parse HEAD)"
 )
 
 NAME=$(cat package.json | grep name | head -1 | awk -F: '{ print $2}' | sed 's/[\",]//g' | tr -d '[[:space:]]')
