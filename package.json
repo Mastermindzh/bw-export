@@ -1,0 +1,16 @@
+{
+  "name": "bw-export",
+  "version": "1.0.0",
+  "description": "bw-export is a simple bash script that exports a raw, encrypted JSON copy of your Bitwarden vault.",
+  "main": "export.sh",
+  "scripts": {
+    "docker-build": "docker build -t bw-export .",
+    "publish": "bash ci/docker-publish.sh"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.mastermindzh.tech:mastermindzh/bitwarden-encrypted-json-sync.git"
+  },
+  "author": "Rick van Lieshout <info@rickvanlieshout.com> (http://rickvanlieshout.com/)",
+  "license": "MIT"
+}
