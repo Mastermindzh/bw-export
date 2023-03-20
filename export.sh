@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# input password might be encrypted/hashed/etc
-
 set -e
 export LC_CTYPE=C
 export LC_ALL=C
@@ -57,7 +55,6 @@ BW_SESSION=$(bw login "$BW_ACCOUNT" "$BW_INTERNAL_PASSWORD" --raw)
 
 # commands
 echo "Exporting to \"$BW_ENC_OUTPUT_FILE\""
-echo "$BW_ENCRYPTION_PASSWORD"
 bw --raw --session "$BW_SESSION" export --format json | openssl enc $BW_OPENSSL_OPTIONS -k "$BW_INTERNAL_ENCRYPTION_PASS" -out "$BW_ENC_OUTPUT_FILE"
 bw_logout
 

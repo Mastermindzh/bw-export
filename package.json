@@ -1,6 +1,6 @@
 {
   "name": "bw-export",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "bw-export is a simple bash script that exports a raw, encrypted JSON copy of your Bitwarden vault.",
   "main": "export.sh",
   "scripts": {
