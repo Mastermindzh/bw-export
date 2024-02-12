@@ -1,10 +1,12 @@
 {
   "name": "bw-export",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "bw-export is a simple bash script that exports a raw, encrypted JSON copy of your Bitwarden vault.",
   "main": "export.sh",
   "scripts": {
-    "docker-build": "docker build -t bw-export .",
+    "start": "export $(cat .env | xargs) && bash export.sh",
+    "build": "docker build -t bw-export .",
+    "test": "docker run -v \"$PWD\":/export bw-export:latest",
     "publish": "bash docker-publish.sh"
   },
   "repository": {

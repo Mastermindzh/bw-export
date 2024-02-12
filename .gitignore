@@ -1,2 +1,4 @@
 .docker-export
 results
+*.enc
+.env

@@ -2,11 +2,11 @@ FROM node:lts-slim
 
 # install openssl
 RUN apt-get update && \
-    apt-get install -y --no-install-recommends openssl && \
+    apt-get install -y --no-install-recommends openssl expect && \
     rm -rf /var/cache/apk/*
 
 # install bitwarden-cli
-RUN npm install -g @bitwarden/cli@2023.2.0
+RUN npm install -g @bitwarden/cli
 
 # add the export script
 RUN mkdir -p /opt/bw-export

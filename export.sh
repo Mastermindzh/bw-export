@@ -9,8 +9,13 @@ bw_logout() {
 }
 
 # environment variables
-BW_ACCOUNT=${BW_ACCOUNT:-"bitwarden_vault_test@mastermindzh.tech"}
-BW_PASS=${BW_PASS:-"VGhpc0lzQVZhdWx0UGFzc3dvcmQK"}
+# BW_AUTH_METHOD=${BW_AUTH_METHOD:-"password"}
+BW_AUTH_METHOD=${BW_AUTH_METHOD:-"apikey"}
+BW_CLIENT_ID=${BW_CLIENT_ID:-"fake_client_id"}
+BW_APIKEY=${BW_APIKEY:-"fake_apikey"}
+
+BW_ACCOUNT=${BW_ACCOUNT:-"fake_account"}
+BW_PASS=${BW_PASS:-"fake_password"}
 BW_FILENAME_PREFIX=${BW_FILENAME_PREFIX:-"bitwarden_vault_export_"}
 BW_TIMESTAMP=${BW_TIMESTAMP:-"+%Y-%m-%d %H:%M:%S"}
 BW_EXPORT_FOLDER=${BW_EXPORT_FOLDER:-"/export"}
@@ -23,6 +28,7 @@ BW_ENCRYPTION_PASS=${BW_ENCRYPTION_PASS:-"$BW_PASS"}
 BW_INTERNAL_TIMESTAMP=$(date "$BW_TIMESTAMP")
 BW_INTERNAL_PASSWORD="$BW_PASS"
 BW_INTERNAL_ENCRYPTION_PASS="$BW_ENCRYPTION_PASS"
+BW_INTERNAL_API_KEY="$BW_APIKEY"
 BW_INTERNAL_FOLDER_STRUCTURE="$BW_EXPORT_FOLDER"
 BW_ENC_OUTPUT_FILE="$BW_FILENAME_PREFIX$BW_INTERNAL_TIMESTAMP.enc"
 if [ -n "$BW_FOLDER_STRUCTURE" ]; then
@@ -39,6 +45,7 @@ case $BW_PASSWORD_ENCODE in
 "base64")
     BW_INTERNAL_PASSWORD=$(echo "$BW_INTERNAL_PASSWORD" | base64 -d)
     BW_INTERNAL_ENCRYPTION_PASS=$(echo "$BW_INTERNAL_ENCRYPTION_PASS" | base64 -d)
+    BW_INTERNAL_API_KEY=$(echo "$BW_INTERNAL_API_KEY" | base64 -d)
     ;;
 "none" | "plain")
     echo "using un-encoded password."
@@ -51,7 +58,31 @@ case $BW_PASSWORD_ENCODE in
 esac
 
 #login
-BW_SESSION=$(bw login "$BW_ACCOUNT" "$BW_INTERNAL_PASSWORD" --raw)
+case $BW_AUTH_METHOD in
+
+"password")
+    BW_SESSION=$(bw login "$BW_ACCOUNT" "$BW_INTERNAL_PASSWORD" --raw)
+    ;;
+"apikey")
+
+    export BW_CLIENT_ID=$BW_CLIENT_ID
+    export BW_INTERNAL_API_KEY=$BW_INTERNAL_API_KEY
+    expect >/dev/null <<'EOF'
+        spawn bw login --apikey
+        expect "client_id:"
+        send "$env(BW_CLIENT_ID)\n" 
+        expect "client_secret:"
+        send "$env(BW_INTERNAL_API_KEY)\n" 
+        expect eof
+EOF
+
+    BW_SESSION=$(bw unlock --raw "$BW_INTERNAL_PASSWORD")
+    ;;
+*)
+    echo "unrecognized authorization method."
+    exit 1
+    ;;
+esac
 
 # commands
 echo "Exporting to \"$BW_ENC_OUTPUT_FILE\""
@@ -59,6 +90,9 @@ bw --raw --session "$BW_SESSION" export --format json | openssl enc $BW_OPENSSL_
 bw_logout
 
 # make sure none of these are available later
+unset BW_CLIENT_ID
+unset BW_APIKEY
+unset BW_INTERNAL_API_KEY
 unset BW_SESSION
 unset BW_ACCOUNT
 unset BW_PASS

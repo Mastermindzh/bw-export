@@ -41,14 +41,17 @@ To decrypt that simply run OpenSSL with the same params in export mode:
 You can tweak a lot of the internal workings of bw-export with simple environmental variables.
 The list below outlines most of them:
 
-| Variable            | Default value                            | Description                                                    |
-| ------------------- | ---------------------------------------- | -------------------------------------------------------------- |
-| BW_ACCOUNT          | `bitwarden_vault_test@mastermindzh.tech` | Bitwarden email address                                        |
-| BW_PASS             | `VGhpc0lzQVZhdWx0UGFzc3dvcmQK`           | Bitwarden password                                             |
-| BW_FILENAME_PREFIX  | `bitwarden_vault_export_`                | Prefix to use for generated files ($prefix$timestamp.enc)      |
-| BW_TIMESTAMP        | `Y-%m-%d %H:%M:%S`                       | Timestamp to use for generated files                           |
-| BW_EXPORT_FOLDER    | `export`                                 | Folder to put export files in                                  |
-| BW_FOLDER_STRUCTURE | `Y/%m`                                   | Date/timestamp to generate folders                             |
-| BW_PASSWORD_ENCODE  | `base64`                                 | "plain", or "base64", depending on whether you encoded BW_PASS |
-| BW_OPENSSL_OPTIONS  | `aes-256-cbc -pbkdf2 -iter 100000`       | Options passed to openssl's "enc" command                      |
-| BW_ENCRYPTION_PASS  | `$BW_PASS` (same value as BW_PASS)       | Password to encrypt the json file                              |
+| Variable            | Default value                             | Description                                                           |
+| ------------------- | ----------------------------------------- | --------------------------------------------------------------------- |
+| BW_ACCOUNT          | `bitwarden_vault_test@mastermindzh.tech`  | Bitwarden email address                                               |
+| BW_PASS             | `VGhpc0lzQVZhdWx0UGFzc3dvcmQK`            | Bitwarden password                                                    |
+| BW_FILENAME_PREFIX  | `bitwarden_vault_export_`                 | Prefix to use for generated files ($prefix$timestamp.enc)             |
+| BW_TIMESTAMP        | `Y-%m-%d %H:%M:%S`                        | Timestamp to use for generated files                                  |
+| BW_EXPORT_FOLDER    | `export`                                  | Folder to put export files in                                         |
+| BW_FOLDER_STRUCTURE | `Y/%m`                                    | Date/timestamp to generate folders                                    |
+| BW_PASSWORD_ENCODE  | `base64`                                  | "plain", or "base64", depending on whether you encoded BW_PASS        |
+| BW_OPENSSL_OPTIONS  | `aes-256-cbc -pbkdf2 -iter 100000`        | Options passed to openssl's "enc" command                             |
+| BW_ENCRYPTION_PASS  | `$BW_PASS` (same value as BW_PASS)        | Password to encrypt the json file                                     |
+| BW_AUTH_METHOD      | password                                  | Whether to login with a password or  apikey (apikey required for 2fa) |
+| BW_CLIENT_ID        | user.cc433b96-4767-432f-85a5-b11100d4faa6 | Bitwarden client id                                                   |
+| BW_APIKEY           | OG1LS3RSVzdXVWRZN25UWEgwdkdOUVMzV0QzVTZr  | Bitwarden api key                                                     |
