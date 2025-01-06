@@ -1,4 +1,4 @@
-FROM node:lts-slim
+FROM node:22.12.0-alpine3.19
 
 # install openssl
 RUN apt-get update && \
