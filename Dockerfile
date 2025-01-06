@@ -1,9 +1,8 @@
 FROM node:22.12.0-alpine3.19
 
 # install openssl
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends openssl expect && \
-    rm -rf /var/cache/apk/*
+RUN apk update && \
+    apk add --no-cache openssl expect
 
 # install bitwarden-cli
 RUN npm install -g @bitwarden/cli
